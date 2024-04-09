@@ -70,7 +70,6 @@ class Contract:
         self.date = date           
         self.royalties = royalties
         type(self).all.append(self)
-        # breakpoint()
     
     @property
     def author(self):
