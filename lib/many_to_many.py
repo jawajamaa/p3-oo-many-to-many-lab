@@ -16,11 +16,17 @@ class Author:
             raise Exception("Name must be of the type string")
 
     def contracts(self):
-        # breakpoint()
         return [contract for contract in Contract.all if contract.author == self]
 
     def books(self):
         return [contract.book for contract in self.contracts()]
+    
+    def sign_contract(self, book, date, royalties):
+        contract = Contract(self, book, date, royalties)
+        return contract
+    
+    def total_royalties(self):
+        return sum([contract.royalties for contract in Contract.all if contract.author == self])
     
 class Book:
     all = list()
@@ -41,17 +47,29 @@ class Book:
             raise Exception("Title must be of the type string")
 
     def contracts(self):
-        pass
+        # contract_list = list()
+        # for contract in Contract.all:
+        #    if contract.book == self:
+        #         contract_list.append(contract)
+        # return contract_list 
+       return [contract for contract in Contract.all if contract.book == self] 
+    
+    def authors(self):
+        return [contract.author for contract in Contract.all]
 
 class Contract:
     all = list()
+
+    @classmethod
+    def contracts_by_date(cls, date):
+        return [contract for contract in cls.all if contract.date == date]
 
     def __init__(self, author, book, date, royalties):
         self.author = author
         self.book = book
         self.date = date           
         self.royalties = royalties
-        Contract.all.append(self)
+        type(self).all.append(self)
         # breakpoint()
     
     @property
